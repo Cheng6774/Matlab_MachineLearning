@@ -1,0 +1,310 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>main</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-09-13"><meta name="DC.source" content="main.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">I. &#28165;&#31354;&#29615;&#22659;&#21464;&#37327;</a></li><li><a href="#2">II. &#23548;&#20837;&#25968;&#25454;</a></li><li><a href="#6">III. &#25968;&#25454;&#24402;&#19968;&#21270;</a></li><li><a href="#9">IV. SVM&#27169;&#22411;&#21019;&#24314;/&#35757;&#32451;</a></li><li><a href="#12">V. SVM&#20223;&#30495;&#39044;&#27979;</a></li><li><a href="#15">VI. &#32472;&#22270;</a></li><li><a href="#16">VII. BP&#31070;&#32463;&#32593;&#32476;</a></li></ul></div><h2>I. &#28165;&#31354;&#29615;&#22659;&#21464;&#37327;<a name="1"></a></h2><pre class="codeinput">clear <span class="string">all</span>
+clc
+</pre><h2>II. &#23548;&#20837;&#25968;&#25454;<a name="2"></a></h2><pre class="codeinput">load <span class="string">concrete_data.mat</span>
+</pre><p>1. &#38543;&#26426;&#20135;&#29983;&#35757;&#32451;&#38598;&#21644;&#27979;&#35797;&#38598;</p><pre class="codeinput">n = randperm(size(attributes,2));
+</pre><p>2. &#35757;&#32451;&#38598;&#8212;&#8212;80&#20010;&#26679;&#26412;</p><pre class="codeinput">p_train = attributes(:,n(1:80))';
+t_train = strength(:,n(1:80))';
+</pre><p>3. &#27979;&#35797;&#38598;&#8212;&#8212;23&#20010;&#26679;&#26412;</p><pre class="codeinput">p_test = attributes(:,n(81:end))';
+t_test = strength(:,n(81:end))';
+</pre><h2>III. &#25968;&#25454;&#24402;&#19968;&#21270;<a name="6"></a></h2><p>1. &#35757;&#32451;&#38598;</p><pre class="codeinput">[pn_train,inputps] = mapminmax(p_train');
+pn_train = pn_train';
+pn_test = mapminmax(<span class="string">'apply'</span>,p_test',inputps);
+pn_test = pn_test';
+</pre><p>2. &#27979;&#35797;&#38598;</p><pre class="codeinput">[tn_train,outputps] = mapminmax(t_train');
+tn_train = tn_train';
+tn_test = mapminmax(<span class="string">'apply'</span>,t_test',outputps);
+tn_test = tn_test';
+</pre><h2>IV. SVM&#27169;&#22411;&#21019;&#24314;/&#35757;&#32451;<a name="9"></a></h2><p>1. &#23547;&#25214;&#26368;&#20339;c&#21442;&#25968;/g&#21442;&#25968;</p><pre class="codeinput">[c,g] = meshgrid(-10:0.5:10,-10:0.5:10);
+[m,n] = size(c);
+cg = zeros(m,n);
+eps = 10^(-4);
+v = 5;
+bestc = 0;
+bestg = 0;
+error = Inf;
+<span class="keyword">for</span> i = 1:m
+    <span class="keyword">for</span> j = 1:n
+        cmd = [<span class="string">'-v '</span>,num2str(v),<span class="string">' -t 2'</span>,<span class="string">' -c '</span>,num2str(2^c(i,j)),<span class="string">' -g '</span>,num2str(2^g(i,j) ),<span class="string">' -s 3 -p 0.1'</span>];
+        cg(i,j) = svmtrain(tn_train,pn_train,cmd);
+        <span class="keyword">if</span> cg(i,j) &lt; error
+            error = cg(i,j);
+            bestc = 2^c(i,j);
+            bestg = 2^g(i,j);
+        <span class="keyword">end</span>
+        <span class="keyword">if</span> abs(cg(i,j) - error) &lt;= eps &amp;&amp; bestc &gt; 2^c(i,j)
+            error = cg(i,j);
+            bestc = 2^c(i,j);
+            bestg = 2^g(i,j);
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><p>2. &#21019;&#24314;/&#35757;&#32451;SVM</p><pre class="codeinput">cmd = [<span class="string">' -t 2'</span>,<span class="string">' -c '</span>,num2str(bestc),<span class="string">' -g '</span>,num2str(bestg),<span class="string">' -s 3 -p 0.01'</span>];
+model = svmtrain(tn_train,pn_train,cmd);
+</pre><h2>V. SVM&#20223;&#30495;&#39044;&#27979;<a name="12"></a></h2><pre class="codeinput">[Predict_1,error_1] = svmpredict(tn_train,pn_train,model);
+[Predict_2,error_2] = svmpredict(tn_test,pn_test,model);
+</pre><pre class="codeoutput">Mean squared error = 0.000426362 (regression)
+Squared correlation coefficient = 0.997399 (regression)
+Mean squared error = 0.00253116 (regression)
+Squared correlation coefficient = 0.971479 (regression)
+</pre><p>1. &#21453;&#24402;&#19968;&#21270;</p><pre class="codeinput">predict_1 = mapminmax(<span class="string">'reverse'</span>,Predict_1,outputps);
+predict_2 = mapminmax(<span class="string">'reverse'</span>,Predict_2,outputps);
+</pre><p>2. &#32467;&#26524;&#23545;&#27604;</p><pre class="codeinput">result_1 = [t_train predict_1];
+result_2 = [t_test predict_2];
+</pre><h2>VI. &#32472;&#22270;<a name="15"></a></h2><pre class="codeinput">figure(1)
+plot(1:length(t_train),t_train,<span class="string">'r-*'</span>,1:length(t_train),predict_1,<span class="string">'b:o'</span>)
+grid <span class="string">on</span>
+legend(<span class="string">'&#30495;&#23454;&#20540;'</span>,<span class="string">'&#39044;&#27979;&#20540;'</span>)
+xlabel(<span class="string">'&#26679;&#26412;&#32534;&#21495;'</span>)
+ylabel(<span class="string">'&#32784;&#21387;&#24378;&#24230;'</span>)
+string_1 = {<span class="string">'&#35757;&#32451;&#38598;&#39044;&#27979;&#32467;&#26524;&#23545;&#27604;'</span>;
+           [<span class="string">'mse = '</span> num2str(error_1(2)) <span class="string">' R^2 = '</span> num2str(error_1(3))]};
+title(string_1)
+figure(2)
+plot(1:length(t_test),t_test,<span class="string">'r-*'</span>,1:length(t_test),predict_2,<span class="string">'b:o'</span>)
+grid <span class="string">on</span>
+legend(<span class="string">'&#30495;&#23454;&#20540;'</span>,<span class="string">'&#39044;&#27979;&#20540;'</span>)
+xlabel(<span class="string">'&#26679;&#26412;&#32534;&#21495;'</span>)
+ylabel(<span class="string">'&#32784;&#21387;&#24378;&#24230;'</span>)
+string_2 = {<span class="string">'&#27979;&#35797;&#38598;&#39044;&#27979;&#32467;&#26524;&#23545;&#27604;'</span>;
+           [<span class="string">'mse = '</span> num2str(error_2(2)) <span class="string">' R^2 = '</span> num2str(error_2(3))]};
+title(string_2)
+</pre><img vspace="5" hspace="5" src="main_01.png" alt=""> <img vspace="5" hspace="5" src="main_02.png" alt=""> <h2>VII. BP&#31070;&#32463;&#32593;&#32476;<a name="16"></a></h2><p>1. &#25968;&#25454;&#36716;&#32622;</p><pre class="codeinput">pn_train = pn_train';
+tn_train = tn_train';
+pn_test = pn_test';
+tn_test = tn_test';
+</pre><p>2. &#21019;&#24314;BP&#31070;&#32463;&#32593;&#32476;</p><pre class="codeinput">net = newff(pn_train,tn_train,10);
+</pre><p>3. &#35774;&#32622;&#35757;&#32451;&#21442;&#25968;</p><pre class="codeinput">net.trainParam.epochs = 1000;
+net.trainParam.goal = 1e-3;
+net.trainParam.show = 10;
+net.trainParam.lr = 0.1;
+</pre><p>4. &#35757;&#32451;&#32593;&#32476;</p><pre class="codeinput">net = train(net,pn_train,tn_train);
+</pre><p>5. &#20223;&#30495;&#27979;&#35797;</p><pre class="codeinput">tn_sim = sim(net,pn_test);
+</pre><p>6. &#22343;&#26041;&#35823;&#24046;</p><pre class="codeinput">E = mse(tn_sim - tn_test);
+</pre><p>7. &#20915;&#23450;&#31995;&#25968;</p><pre class="codeinput">N = size(t_test,1);
+R2=(N*sum(tn_sim.*tn_test)-sum(tn_sim)*sum(tn_test))^2/((N*sum((tn_sim).^2)-(sum(tn_sim))^2)*(N*sum((tn_test).^2)-(sum(tn_test))^2));
+</pre><p>8. &#21453;&#24402;&#19968;&#21270;</p><pre class="codeinput">t_sim = mapminmax(<span class="string">'reverse'</span>,tn_sim,outputps);
+</pre><p>9. &#32472;&#22270;</p><pre class="codeinput">figure(3)
+plot(1:length(t_test),t_test,<span class="string">'r-*'</span>,1:length(t_test),t_sim,<span class="string">'b:o'</span>)
+grid <span class="string">on</span>
+legend(<span class="string">'&#30495;&#23454;&#20540;'</span>,<span class="string">'&#39044;&#27979;&#20540;'</span>)
+xlabel(<span class="string">'&#26679;&#26412;&#32534;&#21495;'</span>)
+ylabel(<span class="string">'&#32784;&#21387;&#24378;&#24230;'</span>)
+string_3 = {<span class="string">'&#27979;&#35797;&#38598;&#39044;&#27979;&#32467;&#26524;&#23545;&#27604;(BP&#31070;&#32463;&#32593;&#32476;)'</span>;
+           [<span class="string">'mse = '</span> num2str(E) <span class="string">' R^2 = '</span> num2str(R2)]};
+title(string_3)
+</pre><img vspace="5" hspace="5" src="main_03.png" alt=""> <p class="footer"><br>
+      Published with MATLAB&reg; 7.14<br></p></div><!--
+##### SOURCE BEGIN #####
+%% I. 清空环境变量
+clear all
+clc
+
+%% II. 导入数据
+load concrete_data.mat
+
+%%
+% 1. 随机产生训练集和测试集
+n = randperm(size(attributes,2));
+
+%%
+% 2. 训练集——80个样本
+p_train = attributes(:,n(1:80))';
+t_train = strength(:,n(1:80))';
+
+%%
+% 3. 测试集——23个样本
+p_test = attributes(:,n(81:end))';
+t_test = strength(:,n(81:end))';
+
+%% III. 数据归一化
+%%
+% 1. 训练集
+[pn_train,inputps] = mapminmax(p_train');
+pn_train = pn_train';
+pn_test = mapminmax('apply',p_test',inputps);
+pn_test = pn_test';
+
+%%
+% 2. 测试集
+[tn_train,outputps] = mapminmax(t_train');
+tn_train = tn_train';
+tn_test = mapminmax('apply',t_test',outputps);
+tn_test = tn_test';
+
+%% IV. SVM模型创建/训练
+%%
+% 1. 寻找最佳c参数/g参数
+[c,g] = meshgrid(-10:0.5:10,-10:0.5:10);
+[m,n] = size(c);
+cg = zeros(m,n);
+eps = 10^(-4);
+v = 5;
+bestc = 0;
+bestg = 0;
+error = Inf;
+for i = 1:m
+    for j = 1:n
+        cmd = ['-v ',num2str(v),' -t 2',' -c ',num2str(2^c(i,j)),' -g ',num2str(2^g(i,j) ),' -s 3 -p 0.1'];
+        cg(i,j) = svmtrain(tn_train,pn_train,cmd);
+        if cg(i,j) < error
+            error = cg(i,j);
+            bestc = 2^c(i,j);
+            bestg = 2^g(i,j);
+        end
+        if abs(cg(i,j) - error) <= eps && bestc > 2^c(i,j)
+            error = cg(i,j);
+            bestc = 2^c(i,j);
+            bestg = 2^g(i,j);
+        end
+    end
+end
+
+%%
+% 2. 创建/训练SVM  
+cmd = [' -t 2',' -c ',num2str(bestc),' -g ',num2str(bestg),' -s 3 -p 0.01'];
+model = svmtrain(tn_train,pn_train,cmd);
+
+%% V. SVM仿真预测
+[Predict_1,error_1] = svmpredict(tn_train,pn_train,model);
+[Predict_2,error_2] = svmpredict(tn_test,pn_test,model);
+
+%%
+% 1. 反归一化
+predict_1 = mapminmax('reverse',Predict_1,outputps);
+predict_2 = mapminmax('reverse',Predict_2,outputps);
+
+%%
+% 2. 结果对比
+result_1 = [t_train predict_1];
+result_2 = [t_test predict_2];
+
+%% VI. 绘图
+figure(1)
+plot(1:length(t_train),t_train,'r-*',1:length(t_train),predict_1,'b:o')
+grid on
+legend('真实值','预测值')
+xlabel('样本编号')
+ylabel('耐压强度')
+string_1 = {'训练集预测结果对比';
+           ['mse = ' num2str(error_1(2)) ' R^2 = ' num2str(error_1(3))]};
+title(string_1)
+figure(2)
+plot(1:length(t_test),t_test,'r-*',1:length(t_test),predict_2,'b:o')
+grid on
+legend('真实值','预测值')
+xlabel('样本编号')
+ylabel('耐压强度')
+string_2 = {'测试集预测结果对比';
+           ['mse = ' num2str(error_2(2)) ' R^2 = ' num2str(error_2(3))]};
+title(string_2)
+
+%% VII. BP神经网络
+%%
+% 1. 数据转置
+pn_train = pn_train';
+tn_train = tn_train';
+pn_test = pn_test';
+tn_test = tn_test';
+
+%%
+% 2. 创建BP神经网络
+net = newff(pn_train,tn_train,10);
+
+%%
+% 3. 设置训练参数
+net.trainParam.epochs = 1000;
+net.trainParam.goal = 1e-3;
+net.trainParam.show = 10;
+net.trainParam.lr = 0.1;
+
+%%
+% 4. 训练网络
+net = train(net,pn_train,tn_train);
+
+%%
+% 5. 仿真测试
+tn_sim = sim(net,pn_test);
+
+%%
+% 6. 均方误差
+E = mse(tn_sim - tn_test);
+
+%%
+% 7. 决定系数
+N = size(t_test,1);
+R2=(N*sum(tn_sim.*tn_test)-sum(tn_sim)*sum(tn_test))^2/((N*sum((tn_sim).^2)-(sum(tn_sim))^2)*(N*sum((tn_test).^2)-(sum(tn_test))^2)); 
+
+%%
+% 8. 反归一化
+t_sim = mapminmax('reverse',tn_sim,outputps);
+
+%%
+% 9. 绘图
+figure(3)
+plot(1:length(t_test),t_test,'r-*',1:length(t_test),t_sim,'b:o')
+grid on
+legend('真实值','预测值')
+xlabel('样本编号')
+ylabel('耐压强度')
+string_3 = {'测试集预测结果对比(BP神经网络)';
+           ['mse = ' num2str(E) ' R^2 = ' num2str(R2)]};
+title(string_3)
+##### SOURCE END #####
+--></body></html>
